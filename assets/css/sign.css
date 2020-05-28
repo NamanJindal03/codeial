@@ -1,0 +1,7 @@
+.box-sign{
+    display: flex;
+    flex-direction: column;
+}
+.box-sign div{
+    margin-top:2px;
+}
