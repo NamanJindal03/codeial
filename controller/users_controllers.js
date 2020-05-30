@@ -1,6 +1,19 @@
 const User = require('../models/user');
 module.exports.profile = (req,res)=>{
-    return res.end('<h1> This is profile page </h1>');
+    //console.log(req.cookies);
+    if(req.cookies.user_id){
+        User.findById(req.cookies.user_id, function(err, user){
+            if(user){
+                return res.render('profile.ejs', {
+                    title: "User Profile",
+                    user: user
+                })
+            }
+            return res.redirect('/users/sign-in');
+        });
+    }else{
+        res.redirect('/users/sign-in');
+    }
 }
 
 module.exports.feed = (req,res) => res.render('feed.ejs');
@@ -31,4 +44,31 @@ module.exports.create = (req,res) =>{
         }
 
     })
+}
+
+module.exports.createSession = (req,res) =>{
+    User.findOne({email: req.body.email}, function(err,user){
+        if(err){
+            console.log(`There is an error in finding user in db`);
+            return res.redirect;
+        }
+        if(user){
+            console.log(user.password);
+            console.log(req.body.password);
+            if(user.password != req.body.password){
+                console.log('passowrd invalid');
+                return res.redirect('back');
+            }
+            res.cookie('user_id', user.id);
+            return res.redirect('/users/profile');
+        }else{
+            console.log('user not present');
+            return res.redirect('back');
+        }
+
+    })
+}
+module.exports.signOut = (req,res) =>{
+    res.clearCookie("user_id");
+    return res.redirect('/users/sign-in');
 }
