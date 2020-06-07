@@ -1,6 +1,6 @@
 const User = require('../models/user');
 module.exports.profile = (req,res)=>{
-    return res.end('<h1> This is profile page </h1>');
+    return res.render('profile.ejs');
 }
 
 module.exports.feed = (req,res) => res.render('feed.ejs');
@@ -31,4 +31,14 @@ module.exports.create = (req,res) =>{
         }
 
     })
+}
+
+module.exports.createSession = (req, res) =>{
+    return res.redirect('/');
+}
+
+module.exports.destroySession = function(req,res){
+    //this logout function is given to express by passport
+    req.logout();
+    return res.redirect('/');
 }
