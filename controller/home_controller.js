@@ -12,7 +12,24 @@ module.exports.home = function(req, res){
     // })
 
     //populate is used fill in all details of a certain thing
-    Post.find({}).populate('user').exec(function(err,posts){
+    Post.find({})
+    /* we can populate the  fields that we defined in the model of the post 
+        in here user was populated and comments were populated
+        if we did not further populate the user in comments then we wont have able to access the name of user
+        if we go to comment model we can find user over there which we are populatinng here itself
+
+        if we only populate comment then we can access comment.user, comment.post, comment.content
+        if we populate the nested user in comment also then we can access comment.user.name, comment.user.email etc
+        as per defined in the model
+    */
+    .populate('user')
+    .populate({
+        path: 'comments',
+        populate: {
+            path: 'user'
+        }
+    })
+    .exec(function(err,posts){
         return res.render('home',{
             posts: posts
         });
