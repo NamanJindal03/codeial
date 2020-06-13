@@ -1,6 +1,22 @@
 const User = require('../models/user');
 module.exports.profile = (req,res)=>{
-    return res.render('profile.ejs');
+    User.findById(req.params.id, function(err, user){
+        return res.render('profile.ejs',{
+            profile_user: user
+        });
+    })
+    
+}
+module.exports.update = (req,res) =>{
+    console.log(req.user.id);
+    console.log(req.params.id);
+    if(req.user.id == req.params.id){
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            return res.redirect('back');
+        });
+    }else{
+        res.status(401).send('Unauthorized');
+    }
 }
 
 module.exports.feed = (req,res) => res.render('feed.ejs');

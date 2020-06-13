@@ -18,3 +18,34 @@ module.exports.create = (req,res) => {
         }
     })
 }
+
+module.exports.destroy = (req,res)=>{
+    //console.log(req.params);
+    Comment.findById(req.params.id, function(err,comment){
+        if(comment.user == req.user.id){
+            let postId = comment.post;
+            comment.remove();
+            Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}}, function(err, post){
+                return res.redirect('back');
+            })
+        }
+        else{
+            return res.redirect('back');
+        }
+    })
+    // Post.findById(req.params.postId, function(err, post){
+    //     if(post){
+    //         Comment.findById(req.params.commentId, function(err, comment){
+    //             if(comment.user == req.user.id){
+    //                 comment.remove();
+    //                 return res.redirect('back');
+    //             }
+    //             else{
+    //                 return res.redirect('back');
+    //             }
+    //         })
+    //     }else{
+    //         return res.redirect('back');
+    //     }
+    // })
+}
