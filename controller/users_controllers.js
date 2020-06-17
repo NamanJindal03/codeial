@@ -48,13 +48,15 @@ module.exports.create = (req,res) =>{
 
     })
 }
-
+//sign in and create user
 module.exports.createSession = (req, res) =>{
+    req.flash('success', 'Logged in Succesfully');
     return res.redirect('/');
 }
 
 module.exports.destroySession = function(req,res){
     //this logout function is given to express by passport
     req.logout();
+    req.flash('success', 'You have logged our');
     return res.redirect('/');
 }

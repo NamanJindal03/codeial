@@ -4,17 +4,19 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user');
 
 passport.use(new LocalStrategy({
-        usernameField: 'email'
+        usernameField: 'email',
+        //this pass req to callback allows us to give our callback another argument req so that we can assign value of noty
+        passReqToCallback: true
     },
-    function(email, password, done){
+    function(req, email, password, done){
         User.findOne({email:email}, function(err, user){
             if(err){
-                console.log('Error in finding user --> Passport');
+                req.flash('error', err);
                 return done(err);
             }
 
             if(!user || user.password!=password){
-                console.log('invalid username/password');
+                req.flash('error', 'invalid Username/Password');
                 return done(err, false);
             }
 

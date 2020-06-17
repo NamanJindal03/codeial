@@ -1,6 +1,6 @@
 const Post = require('../models/post');
 const User = require('../models/user');
-module.exports.home = function(req, res){
+module.exports.home = async function(req, res){
     //console.log(req.cookies);
     //res.cookie('user_id',25);
 
@@ -12,32 +12,36 @@ module.exports.home = function(req, res){
     // })
 
     //populate is used fill in all details of a certain thing
-    Post.find({})
-    /* we can populate the  fields that we defined in the model of the post 
-        in here user was populated and comments were populated
-        if we did not further populate the user in comments then we wont have able to access the name of user
-        if we go to comment model we can find user over there which we are populatinng here itself
+    try{
+        let posts = await Post.find({})
+        /* we can populate the  fields that we defined in the model of the post 
+            in here user was populated and comments were populated
+            if we did not further populate the user in comments then we wont have able to access the name of user
+            if we go to comment model we can find user over there which we are populatinng here itself
 
-        if we only populate comment then we can access comment.user, comment.post, comment.content
-        if we populate the nested user in comment also then we can access comment.user.name, comment.user.email etc
-        as per defined in the model
-    */
-    .populate('user')
-    .populate({
-        path: 'comments',
-        populate: {
-            path: 'user'
-        }
-    })
-    .exec(function(err,posts){
-        User.find({}, function(err, user){
-            return res.render('home',{
-                posts: posts,
-                all_users: user
-            });
+            if we only populate comment then we can access comment.user, comment.post, comment.content
+            if we populate the nested user in comment also then we can access comment.user.name, comment.user.email etc
+            as per defined in the model
+        */
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user'
+            }
         })
         
-    })
+        let users = await User.find({});
+        
+        return res.render('home',{
+            posts: posts,
+            all_users: users
+        });
+    }catch(err){
+        console.log('error:' + err);
+    }
+        
+    
     // return res.render('home.ejs',{
 
     // });
