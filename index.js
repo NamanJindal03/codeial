@@ -4,7 +4,7 @@ const app = express();
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 const db = require("./config/mongoose");
-const customMware = require('./config/middleware');
+
 //used for session cookie
 const session = require('express-session');
 
@@ -13,6 +13,7 @@ const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo')(session);
 const sassMiddleware = require('node-sass-middleware');
 const flash = require('connect-flash');
+const customMWare=require('./config/middleware');
 
 //const temp = require('node')
 
@@ -24,9 +25,10 @@ app.use(sassMiddleware({
     prefix: '/css'
 }))
 app.use(express.urlencoded());
+app.use(express.static('./assets'));
 app.use(cookieParser());
 app.use(expressLayouts);
-app.use(express.static('./assets'));
+
 
 
 
@@ -65,7 +67,7 @@ app.use(passport.session());
 app.use(passport.setAuthenticatedUser);
 app.use(flash());
 
-app.use(customMware.setFlash);
+app.use(customMWare.setFlash);
 // use express router - a middleware
 app.use('/', require('./routes/index.js'));
 app.listen(port, (err)=>{
