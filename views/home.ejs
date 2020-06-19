@@ -11,12 +11,15 @@
         <% } %>
     
         <h1>All Posts</h1>
-        <ul>
+        <div id="posts-list-container">
+            <ul>
            
-            <% for(post of posts){%>
-                <%- include('_post') -%>
-            <% }%>
-        </ul>
+                <% for(post of posts){%>
+                    <%- include('_post') -%>
+                <% }%>
+            </ul>
+        </div>
+        
     </section>
     <section>  
         <h4>Friends</h4> 

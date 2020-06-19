@@ -14,6 +14,8 @@ module.exports.home = async function(req, res){
     //populate is used fill in all details of a certain thing
     try{
         let posts = await Post.find({})
+        //now the recent one comes first because of sort
+        .sort('-createdAt')
         /* we can populate the  fields that we defined in the model of the post 
             in here user was populated and comments were populated
             if we did not further populate the user in comments then we wont have able to access the name of user

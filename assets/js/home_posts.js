@@ -11,9 +11,14 @@
                 url: '/posts/create',
                 data: newPostForm.serialize(),
                 success: function(data){
-                    console.log(data);
+                    //console.log(data);
                     let newPost = newPostDom(data.data.post);
-                    $('#posts-list-containers > ul').prepend(newPost);
+                    console.log(data.data.post);
+                    
+                    
+                    $('#posts-list-container>ul').prepend(newPost);
+
+                    deletePost($(' .delete-post-button', newPost));
                 },
                 error: function(error){
                     console.log(error.responseText);
@@ -24,10 +29,10 @@
     }
     //method to create post in dom
     let newPostDom = function(post){
-        return $(`<li id="post-${post.id}">
+        return $(`<li id="post-${post._id}">
                     
                     <small>
-                        <a class="delete-post-button" href="/posts/destroy/${post.id}"> X </a>
+                        <a class="delete-post-button" href="/posts/destroy/${post._id}"> X </a>
                     </small>
                     
                     <p>
@@ -51,6 +56,25 @@
                     </div>
                 </li>
     `)
+    }
+
+    let deletePost = function(deleteLink){
+        $(deleteLink).click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                type: 'get',
+                //to get the href value from the a tag( a tag is deleteLink in here);
+                url: $(deleteLink).prop('href'),
+                success: function(data){
+                    //.remove() in jquery deletes the selected thing from the DOM
+                    $(`#post-${data.data.post_id}`).remove();
+                },
+                error: function(error){
+                    console.log(error.responseText);
+                }
+            })
+        })
     }
     createPost();
 
