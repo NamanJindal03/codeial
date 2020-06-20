@@ -8,6 +8,7 @@ module.exports.create = async (req,res) => {
             user: req.user._id
         })
         if(req.xhr){
+            //req.flash('success', err);
             return res.status(200).json({
                 data:{
                     post:post

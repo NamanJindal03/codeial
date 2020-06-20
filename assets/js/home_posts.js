@@ -1,8 +1,12 @@
 {
+    
     //method to submit form data for new post using ajax
     let createPost = function(){
+        console.log('in');
         let newPostForm = $('#new-post-form');
+        console.log(newPostForm);
         newPostForm.submit(function(e){
+            console.log("int 2");
             e.preventDefault();
 
             //implementing ajax
@@ -11,17 +15,17 @@
                 url: '/posts/create',
                 data: newPostForm.serialize(),
                 success: function(data){
-                    //console.log(data);
+                    console.log(data);
                     let newPost = newPostDom(data.data.post);
-                    console.log(data.data.post);
-                    
+                    noty_success("Post Created")
                     
                     $('#posts-list-container>ul').prepend(newPost);
 
-                    deletePost($(' .delete-post-button', newPost));
+                    deletePost($(' .delete-post-button',newPost));
                 },
                 error: function(error){
-                    console.log(error.responseText);
+                    noty_error("Post Failed to Create")
+                    console.log("err in here:" + error.responseText);
                 }
 
             })
