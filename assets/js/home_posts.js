@@ -17,14 +17,14 @@
                 success: function(data){
                     console.log(data);
                     let newPost = newPostDom(data.data.post);
-                    noty_success("Post Created")
+                    noty_success("Post Created");
                     
                     $('#posts-list-container>ul').prepend(newPost);
 
                     deletePost($(' .delete-post-button',newPost));
                 },
                 error: function(error){
-                    noty_error("Post Failed to Create")
+                    noty_error("Post Failed to Create");
                     console.log("err in here:" + error.responseText);
                 }
 
@@ -72,9 +72,11 @@
                 url: $(deleteLink).prop('href'),
                 success: function(data){
                     //.remove() in jquery deletes the selected thing from the DOM
+                    noty_success("Post Deleted");
                     $(`#post-${data.data.post_id}`).remove();
                 },
                 error: function(error){
+                    noty_error("Post Delete Failed");
                     console.log(error.responseText);
                 }
             })
