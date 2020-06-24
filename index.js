@@ -26,6 +26,8 @@ app.use(sassMiddleware({
 }))
 app.use(express.urlencoded());
 app.use(express.static('./assets'));
+//make the uploads image path available to the broswer
+app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cookieParser());
 app.use(expressLayouts);
 
