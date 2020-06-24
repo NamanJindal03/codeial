@@ -1,14 +1,21 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
-
+const User = require('../models/user');
 module.exports.create = async (req,res) => {
     try{
         let post = await Post.create({
             content : req.body.content,
             user: req.user._id
         })
+        
         if(req.xhr){
+            //when we try to populate in a data that is already with us in
+            //that case we should use exec populate
+            // we cannot populate normally in here
+            post = await post.populate('user', 'name').execPopulate();
+            console.log(post);
             //req.flash('success', err);
+            //post.populate('user').;
             return res.status(200).json({
                 data:{
                     post:post

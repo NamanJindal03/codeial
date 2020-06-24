@@ -8,11 +8,12 @@
         <%= post.content%>
         <br>
         <small><%= post.user.name%></small>
+        <small><%= post.user.password%></small>
     </p>
     <div class="post-comments">
         <% if(locals.user){%>
-            <form action="/comments/create" method="POST">
-                <input type="text" name="content" placeholder="add comments">
+            <form action="/comments/create" method="POST" id="new-comment-form-<%=post.id %>">
+                <input type="text" name="content" placeholder="add comments" required>
                 <input type="hidden" name="post" value="<%= post._id%>">
                 <input type="submit" value="Add comment">
             </form>
@@ -28,3 +29,4 @@
         </div>
     </div>
 </li>
+

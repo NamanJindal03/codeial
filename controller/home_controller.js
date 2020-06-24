@@ -25,6 +25,7 @@ module.exports.home = async function(req, res){
             if we populate the nested user in comment also then we can access comment.user.name, comment.user.email etc
             as per defined in the model
         */
+       ////this populate is present in the post schema
         .populate('user')
         .populate({
             path: 'comments',
@@ -32,7 +33,7 @@ module.exports.home = async function(req, res){
                 path: 'user'
             }
         })
-        
+        console.log("importand   " + posts);
         let users = await User.find({});
         
         return res.render('home',{

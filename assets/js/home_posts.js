@@ -1,8 +1,15 @@
 {
-    
+    //when the previous posts are loaded it attaches ajax delete
+    //function
+    let insertDelete = function(){
+        let allPost = $('#posts-list-container >ul > li');
+        for(post of allPost){
+            console.log(post);
+            deletePost($(' .delete-post-button', post));
+        }
+    }
     //method to submit form data for new post using ajax
     let createPost = function(){
-        console.log('in');
         let newPostForm = $('#new-post-form');
         console.log(newPostForm);
         newPostForm.submit(function(e){
@@ -18,7 +25,7 @@
                     console.log(data);
                     let newPost = newPostDom(data.data.post);
                     noty_success("Post Created");
-                    
+                    console.log(newPost);
                     $('#posts-list-container>ul').prepend(newPost);
 
                     deletePost($(' .delete-post-button',newPost));
@@ -82,6 +89,7 @@
             })
         })
     }
+    insertDelete();
     createPost();
 
     
