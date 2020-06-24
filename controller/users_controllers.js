@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 module.exports.profile = (req,res)=>{
     User.findById(req.params.id, function(err, user){
         return res.render('profile.ejs',{
@@ -7,8 +9,7 @@ module.exports.profile = (req,res)=>{
     })
     
 }
-module.exports.update = async (req,res) =>{
-    //console.log(req.user.id);
+//console.log(req.user.id);
     //console.log(req.params.id);
     // if(req.user.id == req.params.id){
     //     User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
@@ -17,6 +18,8 @@ module.exports.update = async (req,res) =>{
     // }else{
     //     res.status(401).send('Unauthorized');
     // }
+module.exports.update = async (req,res) =>{
+    
     if(req.user.id == req.params.id){
         try{
             let user = await User.findById(req.params.id);
@@ -28,9 +31,35 @@ module.exports.update = async (req,res) =>{
                 user.name = req.body.name;
                 user.email = req.body.email;
                 if(req.file){
+                    
+                    if(user.avatar){
+                        // fs.access(path.join(__dirname, "..", user.avatar), fs.constants.F_OK, err => {
+                        //     if (err) {
+                        //       console.log(err);
+                        //     //   user.avatar = User.avatarPath + '/' + req.file.filename;
+                        //     //   user.save();
+                              
+                        //     }else{
+                        //         console.log("file exists");
+                        //         console.log(user.avatar);
+                        //         //file exists
+                        //         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                                
+                        //         console.log(user.avatar);
+                                
+                        //     }
+                            
+                        //   })
+                          
+                        fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                        user.avatar = User.avatarPath + '/' + req.file.filename;
+                                
+                    }
                     //saving the path of the uploaded file into the avatar field in the user
-                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                   
                 }
+
+                
                 user.save();
                 return res.redirect('back');
             })
