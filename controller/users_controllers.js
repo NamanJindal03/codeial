@@ -18,6 +18,43 @@ module.exports.profile = (req,res)=>{
     // }else{
     //     res.status(401).send('Unauthorized');
     // }
+    // module.exports.update = async (req,res) =>{
+    //     if(req.user.id == req.params.id){
+    //         try{
+                
+    //             let user = await User.findByIdAndUpdate(req.params.id, req.body);
+    //             let exists = await fs.access(path.join(__dirname, "..", user.avatar));
+    //             console.log(exists);
+    //             await User.uploadedAvatar(req, res);
+    //                 console.log("something" +something);
+    //                 //console.log(req.file);
+    //                 user.name = req.body.name;
+    //                 user.email = req.body.email;
+    //                 if(req.file){
+                        
+    //                     if(user.avatar){
+    //                         let exists = await fs.promises.access(path.join(__dirname, "..", user.avatar));
+    //                         console.log("exists" + exists);
+    //                         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+    //                         console.log(user.avatar);
+                                    
+    //                     }
+                                
+    //                 }
+    //                         //fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+    //                 user.avatar = User.avatarPath + '/' + req.file.filename;
+    //                 user.save();
+    //                 return res.redirect('back');
+    //         }catch(err){
+    //             req.flash('error', err);
+    //             return res.redirect('back');
+    //         }
+    //     }else{
+    //         req.flash('error', 'Unauthorized');
+    //         res.status(401).send('Unauthorized');
+    //     }
+    // }
+    
 module.exports.update = async (req,res) =>{
     
     if(req.user.id == req.params.id){
@@ -33,33 +70,28 @@ module.exports.update = async (req,res) =>{
                 if(req.file){
                     
                     if(user.avatar){
-                        // fs.access(path.join(__dirname, "..", user.avatar), fs.constants.F_OK, err => {
+                        // fs.access(path.join(__dirname, "..", user.avatar), fs.F_OK, function(err) {
                         //     if (err) {
                         //       console.log(err);
-                        //     //   user.avatar = User.avatarPath + '/' + req.file.filename;
-                        //     //   user.save();
+                        // //     //   user.avatar = User.avatarPath + '/' + req.file.filename;
+                        // //     //   user.save();
                               
                         //     }else{
-                        //         console.log("file exists");
-                        //         console.log(user.avatar);
+                        //         // console.log("file exists");
+                        //         // console.log(user.avatar);
                         //         //file exists
                         //         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
                                 
                         //         console.log(user.avatar);
                                 
                         //     }
-                            
-                        //   })
-                          
-                        fs.unlinkSync(path.join(__dirname, "..", user.avatar));
-                        user.avatar = User.avatarPath + '/' + req.file.filename;
-                                
+                        //   })   
+                          //fs.unlinkSync(path.join(__dirname, "..", user.avatar));      
                     }
                     //saving the path of the uploaded file into the avatar field in the user
-                   
+                   //fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                   user.avatar = User.avatarPath + '/' + req.file.filename;
                 }
-
-                
                 user.save();
                 return res.redirect('back');
             })
