@@ -68,31 +68,59 @@ module.exports.update = async (req,res) =>{
                 user.name = req.body.name;
                 user.email = req.body.email;
                 if(req.file){
-                    
                     if(user.avatar){
-                        // fs.access(path.join(__dirname, "..", user.avatar), fs.F_OK, function(err) {
-                        //     if (err) {
-                        //       console.log(err);
-                        // //     //   user.avatar = User.avatarPath + '/' + req.file.filename;
-                        // //     //   user.save();
+                        fs.access(path.join(__dirname, "..", user.avatar), err => {
+                            if (err) {
+                              console.log(err);
+                              user.avatar = User.avatarPath + '/' + req.file.filename;
+                              user.save();
                               
-                        //     }else{
-                        //         // console.log("file exists");
-                        //         // console.log(user.avatar);
-                        //         //file exists
-                        //         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                            }else{
+                                console.log("file exists");
+                                console.log(user.avatar);
+                                //file exists
+                                fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                                user.avatar = User.avatarPath + '/' + req.file.filename;
+                                user.save();
+                                console.log(user.avatar);
                                 
-                        //         console.log(user.avatar);
-                                
-                        //     }
-                        //   })   
-                          //fs.unlinkSync(path.join(__dirname, "..", user.avatar));      
+                            }
+                            
+                          })
+                          
+                        //fs.unlinkSync(path.join(__dirname, "..", user.avatar));
                     }
-                    //saving the path of the uploaded file into the avatar field in the user
-                   //fs.unlinkSync(path.join(__dirname, "..", user.avatar));
-                   user.avatar = User.avatarPath + '/' + req.file.filename;
+                    else
+                    {
+                        user.avatar = User.avatarPath + '/' + req.file.filename;
+                        user.save();
+                    }
+                //     if(user.avatar){
+                //         // fs.access(path.join(__dirname, "..", user.avatar), fs.F_OK, function(err) {
+                //         //     if (err) {
+                //         //       console.log(err);
+                //         // //     //   user.avatar = User.avatarPath + '/' + req.file.filename;
+                //         // //     //   user.save();
+                              
+                //         //     }else{
+                //         //         // console.log("file exists");
+                //         //         // console.log(user.avatar);
+                //         //         //file exists
+                //         //         fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                                
+                //         //         console.log(user.avatar);
+                                
+                //         //     }
+                //         //   })   
+                //           //fs.unlinkSync(path.join(__dirname, "..", user.avatar));      
+                //     }
+                //     //saving the path of the uploaded file into the avatar field in the user
+                //    //fs.unlinkSync(path.join(__dirname, "..", user.avatar));
+                //    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }else{
+                    user.save();
                 }
-                user.save();
+                
                 return res.redirect('back');
             })
         }catch(err){
